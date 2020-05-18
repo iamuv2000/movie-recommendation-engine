@@ -14,6 +14,18 @@ def get_movie_recommendation(movie_user_like, no_of_movies):
     #Get Title from index
     def get_title_from_index(index):
         return dataset[dataset.index == index]['title'].values[0]
+    
+    #Get Votes from index
+    def get_votes_from_index(index):
+        return dataset[dataset.index == index]['vote_average'].values[0]
+
+    #Get director from index
+    def get_director_from_index(index):
+        return dataset[dataset.index == index]['director'].values[0]
+
+    #Get overview from index
+    def get_overview_from_index(index):
+        return dataset[dataset.index == index]['overview'].values[0]
 
     #Get index from title
     def get_index_from_title(title):
@@ -58,16 +70,25 @@ def get_movie_recommendation(movie_user_like, no_of_movies):
     sorted_similar_movies = sorted(similar_movie, key = lambda x:x[1], reverse = True)
 
     i = 0
+    movies = []
     for movie in sorted_similar_movies:
-        print(get_title_from_index(movie[0]).title())
+        title = get_title_from_index(movie[0]).title()
+        votes = get_votes_from_index(movie[0])
+        director = get_director_from_index(movie[0])
+        overview = get_overview_from_index(movie[0])
+        movieObj = {
+            "title" : title,
+            "votes" : votes,
+            "director" : director,
+            "overview" : overview
+        }
+        print(movieObj)
+        movies.append(movieObj)
         i = i + 1
         if i > no_of_movies:
             break
-
-
-get_movie_recommendation('The proposal', 4)
+    return movies 
 
 #TODO: Test accuracy with release date
 #TODO: Use cosine similarity to auto detect close enough search term
-#TODO: Make a flask endpoint
 #TODO: Make a frontend
